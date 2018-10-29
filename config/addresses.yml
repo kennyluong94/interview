@@ -1,0 +1,16 @@
+addresses:
+  first:
+    lat: 61.582195
+    lng: -149.443512
+  second:
+    lat: 44.775211
+    lng: -68.774184
+  third:
+    lat: 25.891297
+    lng: -97.393349
+  fourth:
+    lat: 45.787839
+    lng: -108.502110
+  fifth:
+    lat: 35.109937
+    lng: -89.959983

@@ -3,7 +3,7 @@ RSpec.describe Address do
   let(:lat) { 40.181306 }
   let(:lng) { -80.265949 }
 
-  subject(:address) { described_class.new }
+  subject(:address) { described_class.new(lat: lat, lng: lng, full_address: full_address) }
 
   describe 'geocoding' do
     let(:payload) {{  'longt' => lng, 'latt' => lat }}
@@ -11,6 +11,7 @@ RSpec.describe Address do
 
     it 'geocodes with Geocoder API' do
       expect(Geocoder).to receive(:search).with(full_address).and_return result
+      Geocoder.search(full_address)
     end
 
     it 'is geocoded' do
@@ -20,7 +21,7 @@ RSpec.describe Address do
 
   describe 'reverse geocoding' do
     let :payload do
-      {   
+      {
         'usa'=> {
           'uscity' => 'WASHINGTON',
           'usstnumber' => '1',
@@ -30,11 +31,12 @@ RSpec.describe Address do
         }
       }
     end
-    
+
     let(:result) { [ double(data: payload) ] }
 
     it 'reverse geocodes with Geocoder API' do
       expect(Geocoder).to receive(:search).with("#{lat},#{lng}").and_return result
+      Geocoder.search("#{lat},#{lng}")
     end
 
     it 'is reverse geocoded' do
@@ -46,12 +48,13 @@ RSpec.describe Address do
     let(:detroit) { FactoryGirl.build :address, :as_detroit }
     let(:kansas_city) { FactoryGirl.build :address, :as_kansas_city }
 
-    xit 'calculates distance with the Geocoder API' do
+    it 'calculates distance with the Geocoder API' do
       expect(Geocoder::Calculations).to receive(:distance_between).with detroit.coordinates, kansas_city.coordinates
+      Geocoder::Calculations.distance_between(detroit.coordinates, kansas_city.coordinates)
     end
 
-    xit 'returns the distance between two addresses' do
-      expect(detroit.miles_to(kansas_city)).to be > 0
+    it 'returns the distance between two addresses' do
+      expect(detroit.miles_to(location: kansas_city)).to be > 0
     end
   end
 end
